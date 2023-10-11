@@ -23,7 +23,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
-    "format": "rome format --write src tests"
+    "format": "rome format --write src tests",
+    "lint": "rome check src tests"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
