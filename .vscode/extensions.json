@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "rome.rome",
+    "svelte.svelte-vscode",
+    "zixuanchen.vitest-explorer",
+    "wallabyjs.wallaby-vscode"
+  ]
+}

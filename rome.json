@@ -15,10 +15,6 @@
       "style": {
       	"noUnusedTemplateLiteral": "off"
 			},
-      "suspicious": {
-      	"noDoubleEquals": "off",
-      	"noExplicitAny": "off"
-			},
 			"performance": {
 				"noDelete": "off"
 			}
