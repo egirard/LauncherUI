@@ -1,11 +1,21 @@
 {
-	"name": "firebase-template",
-	"description": "A template for making sveltekit/firebase projects.",
+	"name": "@ourway/firebase-template",
 	"version": "0.0.1",
-	"private": false,
+	"description": "A template for making sveltekit/firebase projects.",
 	"author": "Alex Nicolaou",
-	"git repository": "git@github.com:anicolao/firebase-template.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/anicolao/firebase-template.git"
+  },
+  "keywords": [
+    "firebase",
+    "svelte"
+  ],
 	"license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anicolao/firebase-template/issues"
+  },
+  "homepage": "https://github.com/anicolao/firebase-template#readme",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
