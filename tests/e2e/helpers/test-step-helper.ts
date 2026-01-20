@@ -47,15 +47,16 @@ export class TestStepHelper {
 
     this.steps.push({
       title: options.description,
-      image: `./screenshots/${filenameBase}.png`,
+      image: `./screenshots/${this.testInfo.project.name}/${filenameBase}.png`,
       specs: options.verifications.map((verification) => verification.spec),
     });
   }
 
   generateDocs() {
+    const projectName = this.testInfo.project.name;
     const docPath = path.join(
       path.dirname(this.testInfo.file),
-      `README.${this.testInfo.project.name}.md`,
+      `README.${projectName}.md`,
     );
     let content = `# Test: ${this.metadataTitle || this.testInfo.title}\n\n`;
     if (this.metadataDescription) {

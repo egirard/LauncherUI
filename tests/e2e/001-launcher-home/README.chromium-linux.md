@@ -4,11 +4,10 @@
 
 ## E2E surface renders deterministic content
 
-![E2E surface renders deterministic content](./screenshots/000-initial-load.png)
+![E2E surface renders deterministic content](./screenshots/chromium-linux/000-initial-load.png)
 
 **Verifications:**
 - [x] Surface header is visible
 - [x] Status badge reads Ready
 
 ---
-
