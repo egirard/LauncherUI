@@ -1,5 +1,7 @@
 # LauncherUI
 
+[![E2E Tests](https://github.com/egirard/LauncherUI/actions/workflows/e2e.yml/badge.svg)](https://github.com/egirard/LauncherUI/actions/workflows/e2e.yml)
+
 ## Setup
 1. Install dependencies: `npm install`
 2. Copy `.env.example` to `.env.emulator` (or `.env.staging`, `.env.production`) and fill in values.
