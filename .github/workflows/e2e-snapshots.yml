@@ -44,13 +44,14 @@ jobs:
 
       - name: Commit snapshot updates
         run: |
-          if git diff --quiet; then
+          git add -A tests/e2e
+
+          if git diff --cached --quiet; then
             echo "No snapshot changes detected."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tests/e2e
           git commit -m "Update linux e2e snapshots"
           git push
