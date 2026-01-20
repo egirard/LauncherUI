@@ -21,12 +21,16 @@ The idle state of the table, designed to be visually arresting but not overwhelm
 1.  **Orbital Spin**:
     -   Users can swipe anywhere on the glass to spin the solar system.
     -   **Friction**: The spin has inertia, slowing down gradually.
-    -   **Gravitational Pull**: Tapping a "planet" (game) pulls it into the center, transitioning to the **Pre-Launch** view.
+    -   **Gravitational Pull**:
+        -   **Direct Launch**: Tapping the center of a "planet" (game) immediately launches the game using the last-used settings.
+        -   **Info Mode**: Tapping the small "i" icon (circled) on the planet's rim pulls it into the center, opening the **Pre-Launch** view for configuration.
 
 2.  **Solar Shift (Category Selection)**:
     -   **Trigger**: A "Pinch-Out" gesture starting from the Central Sun.
-    -   **Transition**: The camera zooms out to "Galaxy View", where the Sun dissolves into a cluster of stars (the current category). Other star clusters (Categories: "Strategy", "Party", "Wargame") drift into view.
-    -   **Selection**: Tapping a destination cluster zooms the camera into it. That cluster condenses to form the new Active Sun, and its games spawn as planets in orbit.
+    -   **Transition**: The camera zooms out to "Galaxy View".
+    -   **Favourites Galaxy**: A special "Gold Cluster" automatically contains the **Top 10 Games**.
+        -   **Algorithm**: Ranked by play count during the 4-week period *preceding* the most recent session (e.g., if last played 2 weeks ago, analyze usage from 6 weeks ago to 2 weeks ago).
+    -   **Selection**: Tapping a destination cluster zooms the camera into it.
 
 ---
 
@@ -49,7 +53,9 @@ For power users or when searching for a specific title in a large library.
 2.  **Dismissal & Return**:
     -   **Fade Out**: If no interaction occurs for **30 seconds**, the grid dissolves back into the Orbit View to reduce visual clutter.
     -   **Manual Close**: A drag-down gesture on the search header ("stowing" the keyboard) collapses the grid back into the Search Satellite.
-    -   **Success**: Tapping a game tile transitions immediately to the **Game Pre-Launch** view (which also orients to the active user).
+    -   **Success**:
+        -   **Tap**: Launches game immediately.
+        -   **Info Icon**: Opens **Game Pre-Launch** view.
 
 ### Features
 1.  **Smart Filters**:
@@ -75,8 +81,15 @@ The final step before the game begins. This is a modal-like state that takes ove
     -   **Interaction**: Requires a "Long Press" (1.5s) to activate, filling up with light, to prevent accidental starts.
     -   **Transition**: Upon release, the button explodes into particles that form the loading screen for the game engine.
 
+3.  **Manual Favourite**:
+    -   A "Star" icon floats near the game title.
+    -   **Interaction**: Tapping the star toggles "Favourite" status.
+    -   **Logic**: A favourited game receives a **+1,000 point bump** to its usage score, ensuring it always appears in the Favourites Cluster regardless of recent play history.
+
 ## Navigation Flow
 1.  **Idle**: Orbit View.
 2.  **Search**: Tap "Grid" icon -> Grid View.
-3.  **Select**: Tap a Planet (Orbit) or Hex (Grid) -> Pre-Launch View.
+3.  **Select**:
+    -   Tap Planet/Hex -> **Game Starts** (Direct Launch).
+    -   Tap Info Icon -> **Pre-Launch View**.
 4.  **Confirm**: Long-press "Launch" -> Game Starts.
