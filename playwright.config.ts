@@ -56,7 +56,7 @@ export default defineConfig({
   ],
   webServer: {
     command:
-      "VITE_E2E_AUTH_BYPASS=true npm run dev -- --host 127.0.0.1 --port 5188 --strictPort",
+      "VITE_FIREBASE_ENV=local VITE_FIREBASE_LOCAL_PROJECT_ID=launcherui VITE_EMULATOR_FIRESTORE_HOST=localhost VITE_EMULATOR_FIRESTORE_PORT=8080 VITE_EMULATOR_AUTH_HOST=localhost VITE_EMULATOR_AUTH_PORT=9099 npx firebase emulators:exec --only firestore,auth --project launcherui \"node scripts/seed-emulator.js && npm run dev -- --host 127.0.0.1 --port 5188 --strictPort\"",
     url: "http://localhost:5188",
     reuseExistingServer: false,
   },
