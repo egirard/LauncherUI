@@ -1,66 +1,70 @@
 # Slick Tabletop Launcher UI: Nano Banana Edition
 
 ## Overview
-This proposal outlines the UX/UI for a ground-breaking tabletop game launcher designed for a full-size touch-screen dining table. The "Nano Banana" design language emphasizes fluidity, organic curves, and high-contrast neon accents against deep matte backgrounds, bridging the physical and digital gaming worlds.
+This proposal outlines the UX/UI for the "Launcher" component of a tabletop game system. The focus is strictly on the **Game Selection** and **Game Initiation** flows. The design language, "Nano Banana," emphasizes high-contrast neon aesthetics, fluid orbital mechanics, and tactile touch interactions suitable for a dining room table context.
 
 ## Core Philosophy: The Nano Banana Aesthetic
-- **Slick & Organic**: No sharp corners. Everything is rounded, fluid, and touch-first.
-- **Dark Mode Native**: To reduce glare in a dining setting, the interface uses deep blacks (#050505) and charcoal grays.
-- **Neon Accents**: Key interactive elements glow with "Banana Yellow" (#FFE135) and "Nano Cyan" (#00FFCC).
-- **Physical-Digital Hybrid**: The UI acknowledges physical objects (dice, minis) placed on the table, flowing around them.
+- **Tactile Physics**: Digital objects have weight and inertia. Swiping feels like spinning a physical wheel.
+- **Dark Mode Native**: Deep blacks (#050505) with "Banana Yellow" (#FFE135) and "Nano Cyan" (#00FFCC) accents.
+- **Social Orientation**: The UI creates a centerpiece for the gathering, rotating to welcome users from any seat.
 
-## Screen 1: The Launcher (Home)
-The default state when the table is active but no game is running.
+---
 
-### Visual Concept
-![Launcher Home Screen](./images/launcher_home_screen.png)
-*Concept: Hexagonal grid layout with floating glass tiles. The background is a subtle, animating nebula.*
-
-### User Interactions
-1.  **Orbit Navigation**:
-    -   **Concept**: Game icons are not in a list, but in a solar-system-like orbit around a central "Active Hub".
-    -   **Gesture**: Swipe in a circular motion to rotate the orbit. The faster you swipe, the faster it spins (with friction).
-    -   **Tap**: Tapping a game planet pulls it into the center, expanding it to show "Play", "Settings", and "Resume".
-
-2.  **Multi-User Docket**:
-    -   **Concept**: Each physical seat at the table has a private, retractable "dock" at the edge of the screen for personal settings (volume, accessibility, notification privacy).
-    -   **Gesture**: Swipe up from the table edge to reveal. Swipe down to dismiss.
-    -   **Orientation**: Text and icons automatically rotate to face the user at that edge.
-
-## Screen 2: Game Session Overlay
-When playing a game (e.g., D&D, Catan Digital), the UI shifts to a support role.
+## 1. The Orbit View (Default)
+The idle state of the table, designed to be visually arresting but not overwhelming.
 
 ### Visual Concept
-![Game Session Overlay](./images/game_session_overlay.png)
-*Concept: Non-intrusive HUD elements. A shared central map area. Player zones at each seat.*
-
-### Features
-1.  **Smart Zones**:
-    -   The layout automatically orients UI elements (health bars, card hands, resource counters) to face the player sitting at that specific edge.
-    -   **Interaction**: "Flick" a card from your zone to the center to play it. It grows in size and rotates to face the current active player.
-
-2.  **The "Banana Split" Menu**:
-    -   A gesture-based radial menu that can be summoned anywhere on the playing surface.
-    -   **Gesture**: Three-finger tap reveals the menu (Settings, Pause, Dice Roller, Wiki).
-    -   **Selection**: Slide finger to the desired sector and release.
-
-## Screen 3: The Nano Banana Concept Tools
-Using our proprietary "Nano Banana" engine (conceptually), users can generate assets on the fly.
-
-### Visual Concept
-*Concept: A user sketches a rough shape, and the AI resolves it into a 3D prop.*
+![Orbit View](./images/launcher_orbit_selection.png)
+*Concept: Games "orbit" a central sun. The active category (e.g., "Strategy") is the sun.*
 
 ### Interactions
--   **Sketch-to-Spawn**: Draw a rough shape (e.g., a sword) on the table with a finger; it resolves into a high-fidelity 3D item card.
--   **Voice Command**: "Nano, drop a dragon here." (Visualizes a dragon token on the map).
--   **Token Scanning**: Place a physical miniature on the screen. The table scans its base footprint and creates a digital aura around it, tracking its movement.
+1.  **Orbital Spin**:
+    -   Users can swipe anywhere on the glass to spin the solar system.
+    -   **Friction**: The spin has inertia, slowing down gradually.
+    -   **Gravitational Pull**: Tapping a "planet" (game) pulls it into the center, transitioning to the **Pre-Launch** view.
 
-## Technical Requirements
--   **Hardware**: 55"+ Capacitive Touch Surface, 4K resolution, 120Hz refresh rate.
--   **Software**: Web-based wrapper (Electron/Tauri) running a SvelteKit frontend (LauncherUI).
--   **Input**: Multi-touch (up to 40 simultaneous touch points) + Voice recognition.
+2.  **Solar Shift**:
+    -   Pinching the "Sun" (Category) zooms out to a galaxy view to select a different genre (Family, RPG, Wargame).
 
-## Next Steps
-1.  Prototyping the "Orbit Navigation" in CSS/JS using CSS 3D transforms.
-2.  Building the basic `Layout.svelte` with edge-detection logic for the "Smart Zones".
-3.  Defining the "Banana Theme" CSS variables in `src/app.css` (e.g., `--color-nano-yellow`, `--glass-blur-strength`).
+---
+
+## 2. The Grid View (Browse)
+For power users or when searching for a specific title in a large library.
+
+### Visual Concept
+![Library Grid](./images/launcher_library_grid.png)
+*Concept: A "Honeycomb" grid maximizing screen real estate while maintaining the hexagonal aesthetic.*
+
+### Features
+1.  **Smart Filters**:
+    -   **Edge Filters**: Sliders on the table edge allow multiple users to filter simultaneously (e.g., "Player Count: 4", "Time: < 60m").
+    -   The grid dynamically reshuffles to bubble up matching games to the center.
+
+2.  **Omni-Search**:
+    -   A floating search bar that can be dragged to any user's orientation.
+    -   Typing filters the honeycomb instantly.
+
+---
+
+## 3. Game Pre-Launch
+The final step before the game begins. This is a modal-like state that takes over the screen.
+
+### Visual Concept
+![Game Details](./images/launcher_game_details.png)
+*Concept: A rich, immersive "Box Back" experience. High-fidelity art, setup options, and a clear call to action.*
+
+### UI Elements
+1.  **Session Config**:
+    -   **Player Slider**: A neon slider to set the number of players.
+    -   **Difficulty Toggle**: Simple toggle for Standard/Hardcore modes.
+    
+2.  **The Launch Button**:
+    -   A massive, pulsing "LAUNCH SESSION" button.
+    -   **Interaction**: Requires a "Long Press" (1.5s) to activate, filling up with light, to prevent accidental starts.
+    -   **Transition**: Upon release, the button explodes into particles that form the loading screen for the game engine.
+
+## Navigation Flow
+1.  **Idle**: Orbit View.
+2.  **Search**: Tap "Grid" icon -> Grid View.
+3.  **Select**: Tap a Planet (Orbit) or Hex (Grid) -> Pre-Launch View.
+4.  **Confirm**: Long-press "Launch" -> Game Starts.
