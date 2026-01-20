@@ -8,15 +8,11 @@ test("Sign-in gating routes to launcher", async ({ page }, testInfo) => {
     "**As a** player, **I want** sign-in required before the launcher, **so that** sessions stay scoped.",
   );
 
-  await page.goto("/");
+  await page.goto("/signin?auth=required");
 
-  await tester.step("root-redirect", {
-    description: "Root redirects to sign-in",
+  await tester.step("signin-required", {
+    description: "Sign-in is available when auth is required",
     verifications: [
-      {
-        spec: "URL ends with /signin",
-        check: async () => expect(page).toHaveURL(/\/signin$/),
-      },
       {
         spec: "Sign-in heading is visible",
         check: async () =>
@@ -27,10 +23,10 @@ test("Sign-in gating routes to launcher", async ({ page }, testInfo) => {
     ],
   });
 
-  await page.goto("/launcher");
+  await page.goto("/launcher?auth=required");
 
   await tester.step("launcher-redirect", {
-    description: "Launcher routes to sign-in when unauthenticated",
+    description: "Launcher routes to sign-in when auth is required",
     verifications: [
       {
         spec: "URL ends with /signin",

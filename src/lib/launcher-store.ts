@@ -40,6 +40,10 @@ export function stopApplicationsListener() {
   }
 }
 
+export function setApplications(nextApplications: LauncherApplication[]) {
+  applications.set(nextApplications);
+}
+
 export function setSignedInUser(user: SignedInUser | null) {
   signedInUser.set(user);
 }
