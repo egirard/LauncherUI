@@ -3,6 +3,8 @@ import { goto } from "$app/navigation";
 import { app } from "$lib/firebase";
 import {
   applications,
+  setApplications,
+  setSignedInUser,
   signedInUser,
   startApplicationsListener,
   stopApplicationsListener,
@@ -11,10 +13,26 @@ import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { onDestroy, onMount } from "svelte";
 
 const auth = getAuth(app);
+const isE2EBypass = import.meta.env.VITE_E2E_AUTH_BYPASS === "true";
+const authRequired =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("auth") === "required";
+const allowBypass = isE2EBypass && !authRequired;
 
 let authUnsubscribe: (() => void) | null = null;
 
 onMount(() => {
+  if (allowBypass) {
+    setSignedInUser({
+      signedIn: true,
+      uid: "e2e-user",
+      name: "E2E Player",
+      email: "e2e@example.com",
+    });
+    setApplications([]);
+    return;
+  }
+
   authUnsubscribe = onAuthStateChanged(auth, (user) => {
     if (!user) {
       void goto("/signin");

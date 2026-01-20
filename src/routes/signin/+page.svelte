@@ -8,6 +8,11 @@ import type { SignedInUser } from "@ourway/svelte-firebase-auth";
 
 const auth = getAuth(app);
 const googleAuthProvider = new GoogleAuthProvider();
+const isE2EBypass = import.meta.env.VITE_E2E_AUTH_BYPASS === "true";
+const authRequired =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("auth") === "required";
+const allowBypass = isE2EBypass && !authRequired;
 
 function handleUserChange(event: CustomEvent<SignedInUser>) {
   if (event.detail.signedIn) {
@@ -16,6 +21,16 @@ function handleUserChange(event: CustomEvent<SignedInUser>) {
   } else {
     setSignedInUser(null);
   }
+}
+
+function handleE2ESignIn() {
+  setSignedInUser({
+    signedIn: true,
+    uid: "e2e-user",
+    name: "E2E Player",
+    email: "e2e@example.com",
+  } as SignedInUser);
+  void goto("/launcher");
 }
 </script>
 
@@ -30,7 +45,13 @@ function handleUserChange(event: CustomEvent<SignedInUser>) {
     <p class="subtitle">Your session unlocks the launcher experience.</p>
   </header>
 
-  <Signin {auth} {googleAuthProvider} on:user_changed={handleUserChange} />
+  {#if allowBypass}
+    <button class="e2e-button" type="button" data-testid="e2e-signin" on:click={handleE2ESignIn}>
+      Continue to Launcher (E2E)
+    </button>
+  {:else}
+    <Signin {auth} {googleAuthProvider} on:user_changed={handleUserChange} />
+  {/if}
 </section>
 
 <style>
@@ -64,5 +85,16 @@ function handleUserChange(event: CustomEvent<SignedInUser>) {
   .subtitle {
     margin: 0;
     color: #9ca3af;
+  }
+
+  .e2e-button {
+    align-self: flex-start;
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 225, 53, 0.6);
+    background: #111111;
+    color: #ffe135;
+    font-size: 14px;
+    cursor: pointer;
   }
 </style>

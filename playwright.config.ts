@@ -55,7 +55,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev -- --host 127.0.0.1 --port 5188 --strictPort",
+    command:
+      "VITE_E2E_AUTH_BYPASS=true npm run dev -- --host 127.0.0.1 --port 5188 --strictPort",
     url: "http://localhost:5188",
     reuseExistingServer: false,
   },
