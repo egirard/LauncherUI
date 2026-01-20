@@ -43,8 +43,6 @@ jobs:
           E2E_SNAPSHOT_TARGET: linux
 
       - name: Commit snapshot updates
-        env:
-          HUSKY: 0
         run: |
           git add -A tests/e2e
 
@@ -55,5 +53,5 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update linux e2e snapshots"
+          git -c core.hooksPath=/dev/null commit -m "Update linux e2e snapshots"
           git push
