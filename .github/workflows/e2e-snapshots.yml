@@ -1,0 +1,56 @@
+name: Update Linux E2E Snapshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or ref to update"
+        required: true
+        default: "main"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Update Linux snapshots
+        run: npm run test:e2e:update
+        env:
+          CI: true
+          E2E_SNAPSHOT_TARGET: linux
+
+      - name: Commit snapshot updates
+        run: |
+          if git diff --quiet; then
+            echo "No snapshot changes detected."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/e2e
+          git commit -m "Update linux e2e snapshots"
+          git push

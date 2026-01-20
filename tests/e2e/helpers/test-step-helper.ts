@@ -53,7 +53,10 @@ export class TestStepHelper {
   }
 
   generateDocs() {
-    const docPath = path.join(path.dirname(this.testInfo.file), "README.md");
+    const docPath = path.join(
+      path.dirname(this.testInfo.file),
+      `README.${this.testInfo.project.name}.md`,
+    );
     let content = `# Test: ${this.metadataTitle || this.testInfo.title}\n\n`;
     if (this.metadataDescription) {
       content += `${this.metadataDescription}\n\n`;

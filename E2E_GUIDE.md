@@ -18,8 +18,11 @@ tests/e2e/
 ├── helpers/                   # Shared utilities (TestStepHelper)
 ├── 001-launcher-home/         # Scenario Directory
 │   ├── 001-launcher-home.spec.ts
-│   ├── README.md              # Auto-generated verification doc
+│   ├── README.chromium-macos.md   # Auto-generated verification doc (platform-specific)
+│   ├── README.chromium-linux.md   # Auto-generated verification doc (platform-specific)
 │   └── screenshots/           # Committed baseline images
+│       ├── chromium-macos/
+│       └── chromium-linux/
 ```
 
 ## 3. The "Unified Step Pattern"
@@ -61,3 +64,21 @@ This automatically:
 - **Flags**: We use flags like `--disable-gpu`, `--font-render-hinting=none` for consistent rendering.
 - **Timeouts**: The maximum acceptable timeout for any condition is **2000ms**.
 - **Waits**: `waitForTimeout` and other arbitrary waits are not allowed; always wait on real UI conditions like `expect().toBeVisible()` or `waitForSelector()`.
+
+## 5. Platform-Specific Snapshots
+
+We store platform-specific baselines to keep zero-pixel tolerance across Mac, Windows, and Linux.
+
+- **Local runs** default to your platform (`macos`, `windows`, `linux`).
+- **CI runs** always target `linux`.
+- Override the target with `E2E_SNAPSHOT_TARGET=linux` (or `macos`, `windows`).
+
+### Update Linux snapshots from CI
+
+Run this from your machine to generate Linux baselines on GitHub Actions:
+
+```bash
+gh workflow run e2e-snapshots.yml -f ref=your-branch-name
+```
+
+The workflow will update `tests/e2e/**/screenshots/chromium-linux/*` and commit back to your branch.

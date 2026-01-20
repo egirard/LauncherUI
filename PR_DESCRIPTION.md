@@ -1,7 +1,7 @@
 # Summary
-- Add agent workflow docs, E2E guide, and stack/pattern references for Launcher UI.
-- Add Playwright zero-pixel E2E harness, helper, and baseline snapshot.
-- Enforce E2E in pre-commit and CI workflow, plus add a zero-tolerance verification script.
+- Add platform-specific E2E snapshots and docs so Mac/Windows/Linux can coexist with zero-pixel tolerance.
+- Add a Linux snapshot update workflow runnable via `gh workflow run`.
+- Update Playwright config and docs to target Linux in CI.
 
 # Testing
 - `npm run ci`
