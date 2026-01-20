@@ -7,7 +7,7 @@
 ![Sign-in screen is ready](./screenshots/chromium-linux/000-signin-ready.png)
 
 **Verifications:**
-- [x] E2E sign-in button is visible
+- [x] Emulator sign-in button is visible
 
 ---
 
@@ -19,6 +19,7 @@
 - [x] URL ends with /launcher
 - [x] Launcher heading is visible
 - [x] Games section is present
+- [x] Games list is populated
 
 ---
 

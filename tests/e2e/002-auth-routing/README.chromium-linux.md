@@ -8,6 +8,7 @@
 
 **Verifications:**
 - [x] Sign-in heading is visible
+- [x] Emulator sign-in is available
 
 ---
 
@@ -18,6 +19,7 @@
 **Verifications:**
 - [x] URL ends with /signin
 - [x] Sign-in screen is rendered
+- [x] Emulator sign-in is available
 
 ---
 
