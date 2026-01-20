@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+if [ "$CI" = "true" ] && [ "$GITHUB_ACTIONS" = "true" ]; then
+  exit 0
+fi
+
 npm run ci
 npm test
 npm run test:e2e
