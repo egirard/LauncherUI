@@ -18,3 +18,8 @@ bun run dev
 
 For general dev work,
 bun run dev
+
+## Agent Workflow
+- See `AGENTS.md` for AI agent rules.
+- See `WORKFLOW.md` for PR requirements.
+- See `E2E_GUIDE.md` for zero-pixel tolerance tests.

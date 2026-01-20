@@ -26,6 +26,8 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest run --coverage",
     "test:watch": "vitest watch --coverage",
+    "test:e2e": "node ./scripts/verify-zero-tolerance.js && playwright test",
+    "test:e2e:update": "node ./scripts/verify-zero-tolerance.js && playwright test --update-snapshots",
     "format": "biome format --write src tests",
     "lint": "biome check src tests",
     "lint:fix": "biome check --apply src tests",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.2.2",
+    "@playwright/test": "^1.51.0",
     "@sveltejs/adapter-static": "^3.0.1",
     "@sveltejs/kit": "^2.5.7",
     "@sveltejs/package": "^2.3.1",
