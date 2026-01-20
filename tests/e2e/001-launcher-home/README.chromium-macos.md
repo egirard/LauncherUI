@@ -4,7 +4,7 @@
 
 ## E2E surface renders deterministic content
 
-![E2E surface renders deterministic content](./screenshots/000-initial-load.png)
+![E2E surface renders deterministic content](./screenshots/chromium-macos/000-initial-load.png)
 
 **Verifications:**
 - [x] Surface header is visible
