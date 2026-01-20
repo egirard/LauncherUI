@@ -1,20 +1,11 @@
-# Slick Tabletop Launcher UI Design Proposal (Rev 4)
+# Summary
+- Draft the UI overhaul design document for evolving the launcher into the Nano Banana experience.
 
-This PR adds a design proposal for the Tabletop Launcher UI, following the "Nano Banana" aesthetic.
-**Update 3**: Added Direct Launch, Info Mode, and detailed Favourites algorithm.
+# Testing
+- Not run (docs only).
 
-## Changes
-- Updated `docs/SLICK_TABLETOP_LAUNCHER_UI.md`:
-    - **Direct Launch**: Tapping a game launches it immediately (no modal).
-    - **Info Mode**: Tapping the "i" badge opens the Pre-Launch details.
-    - **Favourites Algorithm**: Rolling 4-week window (preceding last session) + 1000pt manual boost.
-    - **No Tutorial**: Design assumes intuitive usage without on-boarding flows.
+# Questions / Open Issues
+- None.
 
-## User Request
-> ...default tap action should just be to launch the game... there should be a 'favourites' cluster...
-
-## Features
-1.  **Orbit View**: Solar system navigation with physics-based inertia.
-2.  **Favourites**: "Gold Cluster" based on smart time-windowed usage stats.
-3.  **Smart Orientation**: UI rotates to face the active user.
-4.  **Action Separation**: "Tap to Play" vs "Info for Details" speed up the flow for experienced groups.
+# Original User Prompt(s)
+> OK we have switched over to main. Antigravity has designed docs/SLICK_TABLETOP_LAUNCHER_UI.md with visual inspiration and UX direction. Our job is to write docs/UI_OVERHAUL_DESIGN.md that describes how we'll take the current state of the launcher to the envisioned state. I suggest we use threlte for the graphics for the launcher, to be able to create the fluid experience described, but you can also argue for a simpler CSS animations approach if you think ou can render something like the given mockups with CSS. You'll need to split the sign in page from teh main page of the launcher, and in fact long term I'd like to eliminate the sign in page, but for now it is acceptable to have a sign in step that is reqiured before the main launcher screen appears. Let's make a PR for the implementation which for now may contain just the design document for what needs to be done.
