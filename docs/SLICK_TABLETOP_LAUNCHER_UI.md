@@ -23,8 +23,10 @@ The idle state of the table, designed to be visually arresting but not overwhelm
     -   **Friction**: The spin has inertia, slowing down gradually.
     -   **Gravitational Pull**: Tapping a "planet" (game) pulls it into the center, transitioning to the **Pre-Launch** view.
 
-2.  **Solar Shift**:
-    -   Pinching the "Sun" (Category) zooms out to a galaxy view to select a different genre (Family, RPG, Wargame).
+2.  **Solar Shift (Category Selection)**:
+    -   **Trigger**: A "Pinch-Out" gesture starting from the Central Sun.
+    -   **Transition**: The camera zooms out to "Galaxy View", where the Sun dissolves into a cluster of stars (the current category). Other star clusters (Categories: "Strategy", "Party", "Wargame") drift into view.
+    -   **Selection**: Tapping a destination cluster zooms the camera into it. That cluster condenses to form the new Active Sun, and its games spawn as planets in orbit.
 
 ---
 
@@ -35,14 +37,24 @@ For power users or when searching for a specific title in a large library.
 ![Library Grid](./images/launcher_library_grid.png)
 *Concept: A "Honeycomb" grid maximizing screen real estate while maintaining the hexagonal aesthetic.*
 
+### Interaction: Invoking & Orientation
+1.  **Transition to Search**:
+    -   **Trigger**: A "Search Satellite" orbits the sun at a fixed distance. Tapping this satellite triggers the Search View.
+    -   **Orientation Detection**: The table detects the "angle of attack" of the tap.
+        -   The center of the table is $(0,0)$.
+        -   The tap coordinate $(x,y)$ creates a vector.
+        -   The UI rotates $RotZ = atan2(y, x) - 90\deg$ so the bottom of the search interface faces the user who tapped.
+    -   **Animation**: The Search Satellite expands and unfolds into the Honeycomb Grid, originating from the user's side of the table.
+
+2.  **Dismissal & Return**:
+    -   **Fade Out**: If no interaction occurs for **30 seconds**, the grid dissolves back into the Orbit View to reduce visual clutter.
+    -   **Manual Close**: A drag-down gesture on the search header ("stowing" the keyboard) collapses the grid back into the Search Satellite.
+    -   **Success**: Tapping a game tile transitions immediately to the **Game Pre-Launch** view (which also orients to the active user).
+
 ### Features
 1.  **Smart Filters**:
     -   **Edge Filters**: Sliders on the table edge allow multiple users to filter simultaneously (e.g., "Player Count: 4", "Time: < 60m").
     -   The grid dynamically reshuffles to bubble up matching games to the center.
-
-2.  **Omni-Search**:
-    -   A floating search bar that can be dragged to any user's orientation.
-    -   Typing filters the honeycomb instantly.
 
 ---
 
