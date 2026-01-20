@@ -5,6 +5,9 @@
 2. Copy `.env.example` to `.env.emulator` (or `.env.staging`, `.env.production`) and fill in values.
 3. Switch environments with `npm run env:local` (or `env:staging`, `env:production`).
 
+## Nix Development Shell
+- Run `nix develop` to load Node.js, Bun, and Java for emulator workflows.
+
 ## Local Emulator Workflow
 - Ensure Java is installed (required for the Firestore emulator).
 - Start emulators: `npm run emulators:start`
