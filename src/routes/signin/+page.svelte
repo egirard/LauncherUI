@@ -1,18 +1,26 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { app } from "$lib/firebase";
+import { auth } from "$lib/firebase";
 import { setSignedInUser } from "$lib/launcher-store";
-import { GoogleAuthProvider, getAuth } from "@firebase/auth";
+import {
+  GoogleAuthProvider,
+  type User,
+  signInAnonymously,
+} from "@firebase/auth";
 import { Signin } from "@ourway/svelte-firebase-auth";
 import type { SignedInUser } from "@ourway/svelte-firebase-auth";
 
-const auth = getAuth(app);
 const googleAuthProvider = new GoogleAuthProvider();
-const isE2EBypass = import.meta.env.VITE_E2E_AUTH_BYPASS === "true";
-const authRequired =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("auth") === "required";
-const allowBypass = isE2EBypass && !authRequired;
+const isLocalEnv = import.meta.env.VITE_FIREBASE_ENV === "local";
+let signInError = "";
+
+const toSignedInUser = (user: User): SignedInUser => ({
+  signedIn: true,
+  uid: user.uid,
+  name: user.displayName ?? "Player",
+  email: user.email ?? "emulator@launcherui.local",
+  photoURL: user.photoURL ?? undefined,
+});
 
 function handleUserChange(event: CustomEvent<SignedInUser>) {
   if (event.detail.signedIn) {
@@ -23,14 +31,15 @@ function handleUserChange(event: CustomEvent<SignedInUser>) {
   }
 }
 
-function handleE2ESignIn() {
-  setSignedInUser({
-    signedIn: true,
-    uid: "e2e-user",
-    name: "E2E Player",
-    email: "e2e@example.com",
-  } as SignedInUser);
-  void goto("/launcher");
+async function handleEmulatorSignIn() {
+  signInError = "";
+  try {
+    const result = await signInAnonymously(auth);
+    setSignedInUser(toSignedInUser(result.user));
+    await goto("/launcher");
+  } catch (error) {
+    signInError = error instanceof Error ? error.message : "Sign-in failed.";
+  }
 }
 </script>
 
@@ -45,10 +54,18 @@ function handleE2ESignIn() {
     <p class="subtitle">Your session unlocks the launcher experience.</p>
   </header>
 
-  {#if allowBypass}
-    <button class="e2e-button" type="button" data-testid="e2e-signin" on:click={handleE2ESignIn}>
-      Continue to Launcher (E2E)
+  {#if isLocalEnv}
+    <button
+      class="e2e-button"
+      type="button"
+      data-testid="emulator-signin"
+      on:click={handleEmulatorSignIn}
+    >
+      Continue with Emulator
     </button>
+    {#if signInError}
+      <p class="error" role="alert">{signInError}</p>
+    {/if}
   {:else}
     <Signin {auth} {googleAuthProvider} on:user_changed={handleUserChange} />
   {/if}
@@ -96,5 +113,10 @@ function handleE2ESignIn() {
     color: #ffe135;
     font-size: 14px;
     cursor: pointer;
+  }
+
+  .error {
+    margin: 0;
+    color: #fca5a5;
   }
 </style>

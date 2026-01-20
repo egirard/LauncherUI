@@ -11,3 +11,5 @@ vite.config.ts.timestamp-*
 /coverage
 /playwright-report
 /test-results
+firebase-debug.log
+firestore-debug.log

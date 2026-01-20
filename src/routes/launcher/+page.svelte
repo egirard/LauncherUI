@@ -1,6 +1,6 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { app } from "$lib/firebase";
+import { auth } from "$lib/firebase";
 import {
   applications,
   setApplications,
@@ -9,37 +9,33 @@ import {
   startApplicationsListener,
   stopApplicationsListener,
 } from "$lib/launcher-store";
-import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { type User, onAuthStateChanged } from "@firebase/auth";
+import type { SignedInUser } from "@ourway/svelte-firebase-auth";
 import { onDestroy, onMount } from "svelte";
-
-const auth = getAuth(app);
-const isE2EBypass = import.meta.env.VITE_E2E_AUTH_BYPASS === "true";
-const authRequired =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("auth") === "required";
-const allowBypass = isE2EBypass && !authRequired;
 
 let authUnsubscribe: (() => void) | null = null;
 
-onMount(() => {
-  if (allowBypass) {
-    setSignedInUser({
-      signedIn: true,
-      uid: "e2e-user",
-      name: "E2E Player",
-      email: "e2e@example.com",
-    });
-    setApplications([]);
-    return;
-  }
+const toSignedInUser = (user: User): SignedInUser => ({
+  signedIn: true,
+  uid: user.uid,
+  name: user.displayName ?? "Player",
+  email: user.email ?? "player@launcherui.local",
+  photoURL: user.photoURL ?? undefined,
+});
 
+onMount(() => {
   authUnsubscribe = onAuthStateChanged(auth, (user) => {
     if (!user) {
+      setSignedInUser(null);
+      setApplications([]);
+      stopApplicationsListener();
       void goto("/signin");
+      return;
     }
-  });
 
-  startApplicationsListener();
+    setSignedInUser(toSignedInUser(user));
+    startApplicationsListener();
+  });
 });
 
 onDestroy(() => {
@@ -71,7 +67,7 @@ $: displayName = $signedInUser?.name ?? "Player";
   <section class="apps">
     <h2>Available Games</h2>
     {#if $applications.length > 0}
-      <ul>
+      <ul data-testid="applications-list">
         {#each $applications as application}
           <li>
             <a href={application.URL} target="_blank" rel="noreferrer">

@@ -1,23 +1,20 @@
 # LauncherUI
 
-Installation and configuration Stuff
-bun i
-bunx firebase login
->>>> probably not needed bunx firebase init
+## Setup
+1. Install dependencies: `npm install`
+2. Copy `.env.example` to `.env.emulator` (or `.env.staging`, `.env.production`) and fill in values.
+3. Switch environments with `npm run env:local` (or `env:staging`, `env:production`).
 
-Build website and deploy to firebase server
-bun run build
-bunx firebase deploy
+## Local Emulator Workflow
+- Ensure Java is installed (required for the Firestore emulator).
+- Start emulators: `npm run emulators:start`
+- Seed Firestore: `npm run emulators:seed`
+- Run the dev server: `npm run dev:emulator`
 
-Run continuous integration tests:
-bun run ci
-Fix linting (necessary for checkin)
-bun run lint:fix
-Run the dev server (only have to do this once; server will auto-reload on save)
-bun run dev
-
-For general dev work,
-bun run dev
+## Testing
+- Lint: `npm run lint:fix`
+- Unit tests: `npm test`
+- E2E tests: `npm run test:e2e`
 
 ## Agent Workflow
 - See `AGENTS.md` for AI agent rules.

@@ -65,7 +65,14 @@ This automatically:
 - **Timeouts**: The maximum acceptable timeout for any condition is **2000ms**.
 - **Waits**: `waitForTimeout` and other arbitrary waits are not allowed; always wait on real UI conditions like `expect().toBeVisible()` or `waitForSelector()`.
 
-## 5. Platform-Specific Snapshots
+## 5. Firebase Emulators
+
+E2E runs against Firebase emulators for Auth and Firestore.
+
+- **Requirement**: Firestore emulator needs Java installed locally.
+- **Seed Data**: `scripts/seed-emulator.js` loads `test-data/firestore-seed.json`.
+
+## 6. Platform-Specific Snapshots
 
 We store platform-specific baselines to keep zero-pixel tolerance across Mac, Windows, and Linux.
 

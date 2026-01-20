@@ -1,0 +1,19 @@
+{
+  "Applications": [
+    {
+      "id": "nano-banana",
+      "Title": "Nano Banana",
+      "URL": "https://example.com/nano-banana"
+    },
+    {
+      "id": "orbit-arcade",
+      "Title": "Orbit Arcade",
+      "URL": "https://example.com/orbit-arcade"
+    },
+    {
+      "id": "tabletop-core",
+      "Title": "Tabletop Core",
+      "URL": "https://example.com/tabletop-core"
+    }
+  ]
+}

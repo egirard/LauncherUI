@@ -8,7 +8,7 @@ test("Sign-in gating routes to launcher", async ({ page }, testInfo) => {
     "**As a** player, **I want** sign-in required before the launcher, **so that** sessions stay scoped.",
   );
 
-  await page.goto("/signin?auth=required");
+  await page.goto("/signin");
 
   await tester.step("signin-required", {
     description: "Sign-in is available when auth is required",
@@ -20,10 +20,15 @@ test("Sign-in gating routes to launcher", async ({ page }, testInfo) => {
             page.getByRole("heading", { name: "Sign in to continue" }),
           ).toBeVisible(),
       },
+      {
+        spec: "Emulator sign-in is available",
+        check: async () =>
+          expect(page.getByTestId("emulator-signin")).toBeVisible(),
+      },
     ],
   });
 
-  await page.goto("/launcher?auth=required");
+  await page.goto("/launcher");
 
   await tester.step("launcher-redirect", {
     description: "Launcher routes to sign-in when auth is required",
@@ -38,6 +43,11 @@ test("Sign-in gating routes to launcher", async ({ page }, testInfo) => {
           expect(
             page.getByText("Your session unlocks the launcher experience."),
           ).toBeVisible(),
+      },
+      {
+        spec: "Emulator sign-in is available",
+        check: async () =>
+          expect(page.getByTestId("emulator-signin")).toBeVisible(),
       },
     ],
   });
