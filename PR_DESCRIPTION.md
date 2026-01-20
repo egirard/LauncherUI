@@ -2,6 +2,7 @@
 - Replace the E2E auth bypass with Firebase emulator-backed sign-in and seeded launcher data.
 - Add emulator tooling (seed script, env switcher, firebase config converter) plus local/staging/production dev scripts.
 - Document emulator requirements and update auth routing tests to validate the populated games list.
+- Add a Nix dev shell for Node, Bun, and Java.
 
 # Testing
 - `npm run ci`
