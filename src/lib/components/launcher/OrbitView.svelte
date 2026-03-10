@@ -4,11 +4,20 @@ import OrbitItem from "./OrbitItem.svelte";
 import OrbitSun from "./OrbitSun.svelte";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const applications: any[] = [];
+// biome-ignore lint/style/useConst: Svelte 4 props must be let
+export let applications: any[] = [];
+
+let isE2e = false;
+try {
+  isE2e = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+} catch (e) {}
 </script>
 
 <div class="canvas-container">
-  <Canvas>
+  <Canvas 
+    frameloop={isE2e ? 'demand' : 'always'}
+    rendererParameters={{ antialias: !isE2e, preserveDrawingBuffer: true, powerPreference: 'high-performance' }}
+  >
     <T.PerspectiveCamera 
       makeDefault 
       position={[0, 8, 12]} 

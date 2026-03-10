@@ -1,5 +1,5 @@
 import { firestore } from "$lib/firebase";
-import { collection, onSnapshot } from "@firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
 import type { Unsubscribe } from "@firebase/firestore";
 import type { SignedInUser } from "@ourway/svelte-firebase-auth";
 import { writable } from "svelte/store";
@@ -21,7 +21,10 @@ export function startApplicationsListener() {
     return appsUnsubscribe;
   }
 
-  const applicationsRef = collection(firestore, "Applications");
+  const applicationsRef = query(
+    collection(firestore, "Applications"),
+    orderBy("Title"),
+  );
   appsUnsubscribe = onSnapshot(applicationsRef, (snapshot) => {
     const nextApps = snapshot.docs.map((doc) => ({
       id: doc.id,

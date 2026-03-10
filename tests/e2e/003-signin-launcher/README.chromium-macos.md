@@ -18,8 +18,7 @@
 **Verifications:**
 - [x] URL ends with /launcher
 - [x] Launcher heading is visible
-- [x] Games section is present
-- [x] Games list is populated
+- [x] Games are rendered in deterministic alphabetical order
 
 ---
 

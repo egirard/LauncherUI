@@ -27,7 +27,13 @@ export class TestStepHelper {
   constructor(
     private page: Page,
     private testInfo: TestInfo,
-  ) {}
+  ) {
+    // Inject deterministic flags into the browser context immediately
+    this.page.addInitScript(() => {
+      window.name = "e2e";
+      window.localStorage.setItem("e2e", "true");
+    });
+  }
 
   setMetadata(title: string, description: string) {
     this.metadataTitle = title;
@@ -43,7 +49,10 @@ export class TestStepHelper {
     const slug = id.replace(/_/g, "-");
     const filenameBase = `${paddedIndex}-${slug}`;
 
-    await expect(this.page).toHaveScreenshot(filenameBase);
+    await this.page.waitForTimeout(500); // Allow WebGL frames and DOM overlays to settle
+    await expect(this.page).toHaveScreenshot(filenameBase, {
+      animations: "disabled",
+    });
 
     this.steps.push({
       title: options.description,

@@ -10,21 +10,17 @@ export let total: number;
 
 const radius = 4;
 // Use index to space items evenly across the orbit, add some variation so it's not a perfect circle if wanted, but standard circle is good
-let angle = (index / total) * Math.PI * 2;
+$: angle = (index / total) * Math.PI * 2;
 // Constant speed rather than random, so even in non-E2E it looks organized, but varying slightly
-const speed = 0.2 + (index % 3) * 0.05;
+$: speed = 0.2 + (index % 3) * 0.05;
 
 let isE2e = false;
+try {
+  isE2e = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+} catch (e) {}
 
-onMount(() => {
-  isE2e =
-    new URLSearchParams(window.location.search).get("e2e") === "true" ||
-    window.localStorage.getItem("e2e") === "true" ||
-    window.name === "e2e";
-});
-
-let x = Math.cos(angle) * radius;
-let z = Math.sin(angle) * radius;
+$: x = Math.cos(angle) * radius;
+$: z = Math.sin(angle) * radius;
 
 // Slowly rotate items
 useFrame((_, delta) => {
@@ -90,5 +86,12 @@ useFrame((_, delta) => {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .game-card {
+      transition: none !important;
+      animation: none !important;
+    }
   }
 </style>

@@ -4,13 +4,9 @@ import { onMount } from "svelte";
 
 let rotation = 0;
 let isE2e = false;
-
-onMount(() => {
-  isE2e =
-    new URLSearchParams(window.location.search).get("e2e") === "true" ||
-    window.localStorage.getItem("e2e") === "true" ||
-    window.name === "e2e";
-});
+try {
+  isE2e = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+} catch (e) {}
 
 useFrame((_, delta) => {
   if (!isE2e) {

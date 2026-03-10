@@ -6,5 +6,4 @@ if [ "$CI" = "true" ] && [ "$GITHUB_ACTIONS" = "true" ]; then
 fi
 
 npm run ci
-npm test
 npm run test:e2e

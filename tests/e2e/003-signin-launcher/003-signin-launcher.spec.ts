@@ -38,8 +38,45 @@ test("E2E sign-in leads to launcher", async ({ page }, testInfo) => {
           ).toBeVisible(),
       },
       {
-        spec: "Games are rendered in 3D overlay",
-        check: async () => expect(page.locator(".game-card")).toHaveCount(3),
+        spec: "Games are rendered in deterministic alphabetical order",
+        check: async () => {
+          await expect(page.locator(".game-card")).toHaveCount(3);
+
+          // Verify exact deterministic order due to Firestore sorting
+          const expectedTitles = [
+            "Nano Banana",
+            "Orbit Arcade",
+            "Tabletop Core",
+          ];
+          for (let i = 0; i < 3; i++) {
+            await expect(page.locator(".game-card").nth(i)).toHaveText(
+              expectedTitles[i],
+            );
+          }
+
+          // Log and verify exact deterministic 3D positions mapped to 2D
+          const initialBoxes: { x: number; y: number }[] = [];
+          for (let i = 0; i < 3; i++) {
+            const box = await page.locator(".game-card").nth(i).boundingBox();
+            expect(box).not.toBeNull();
+            if (!box) throw new Error("Box was null");
+            initialBoxes.push(box);
+          }
+
+          // Wait to ensure UI state is actually frozen
+          await page.waitForTimeout(500);
+
+          for (let i = 0; i < 3; i++) {
+            const box = await page.locator(".game-card").nth(i).boundingBox();
+            expect(box).not.toBeNull();
+
+            // Programmatically assert none of the games are moving/orbiting.
+            // If these fail, Svelte/ThreeJS is leaking animations into the E2E state.
+            if (!box || !initialBoxes[i]) throw new Error("Box was null");
+            expect(Math.round(box.x)).toBe(Math.round(initialBoxes[i].x));
+            expect(Math.round(box.y)).toBe(Math.round(initialBoxes[i].y));
+          }
+        },
       },
     ],
   });
