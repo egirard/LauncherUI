@@ -21,7 +21,8 @@ const toSignedInUser = (user: User): SignedInUser => ({
   uid: user.uid,
   name: user.displayName ?? "Player",
   email: user.email ?? "player@launcherui.local",
-  photoURL: user.photoURL ?? undefined,
+  photo: user.photoURL ?? "",
+  last: Date.now(),
 });
 
 onMount(() => {

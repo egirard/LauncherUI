@@ -3,17 +3,20 @@
     {
       "id": "nano-banana",
       "Title": "Nano Banana",
-      "URL": "https://example.com/nano-banana"
+      "URL": "https://example.com/nano-banana",
+      "Icon": "/games/nano-banana.png"
     },
     {
       "id": "orbit-arcade",
       "Title": "Orbit Arcade",
-      "URL": "https://example.com/orbit-arcade"
+      "URL": "https://example.com/orbit-arcade",
+      "Icon": "/games/orbit-arcade.png"
     },
     {
       "id": "tabletop-core",
       "Title": "Tabletop Core",
-      "URL": "https://example.com/tabletop-core"
+      "URL": "https://example.com/tabletop-core",
+      "Icon": "/games/tabletop-core.png"
     }
   ]
 }

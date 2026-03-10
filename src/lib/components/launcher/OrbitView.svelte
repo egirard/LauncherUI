@@ -15,7 +15,7 @@ try {
 
 <div class="canvas-container">
   <Canvas 
-    frameloop={isE2e ? 'demand' : 'always'}
+    renderMode={isE2e ? 'on-demand' : 'always'}
     rendererParameters={{ antialias: !isE2e, preserveDrawingBuffer: true, powerPreference: 'high-performance' }}
   >
     <T.PerspectiveCamera 
