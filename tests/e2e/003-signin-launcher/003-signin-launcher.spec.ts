@@ -34,22 +34,12 @@ test("E2E sign-in leads to launcher", async ({ page }, testInfo) => {
         spec: "Launcher heading is visible",
         check: async () =>
           expect(
-            page.getByRole("heading", { name: "Launcher Orbit View" }),
+            page.getByRole("heading", { name: "Launcher", exact: true }),
           ).toBeVisible(),
       },
       {
-        spec: "Games section is present",
-        check: async () =>
-          expect(
-            page.getByRole("heading", { name: "Available Games" }),
-          ).toBeVisible(),
-      },
-      {
-        spec: "Games list is populated",
-        check: async () =>
-          expect(
-            page.getByTestId("applications-list").locator("li"),
-          ).toHaveCount(3),
+        spec: "Games are rendered in 3D overlay",
+        check: async () => expect(page.locator(".game-card")).toHaveCount(3),
       },
     ],
   });
