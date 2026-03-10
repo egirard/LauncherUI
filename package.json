@@ -31,7 +31,7 @@
     "env:local": "node scripts/switch-env.js local",
     "env:staging": "node scripts/switch-env.js staging",
     "env:production": "node scripts/switch-env.js production",
-    "dev:emulator": "VITE_FIREBASE_ENV=local VITE_FIREBASE_LOCAL_PROJECT_ID=launcherui vite dev",
+    "dev:emulator": "VITE_FIREBASE_ENV=local VITE_FIREBASE_LOCAL_PROJECT_ID=launcherui npx firebase emulators:exec --only firestore,auth --project launcherui \"node scripts/seed-emulator.js && vite dev\"",
     "dev:staging": "VITE_FIREBASE_ENV=staging vite dev",
     "dev:production": "VITE_FIREBASE_ENV=production vite dev",
     "emulators:start": "firebase emulators:start --only firestore,auth",
