@@ -3,7 +3,9 @@ import { initializeApp } from "@firebase/app";
 import { connectAuthEmulator, getAuth } from "@firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
 
-const firebaseEnv = import.meta.env.VITE_FIREBASE_ENV ?? "production";
+const isDevServer = import.meta.env.DEV;
+const _fallbackEnv = isDevServer ? "local" : "production";
+const firebaseEnv = import.meta.env.VITE_FIREBASE_ENV ?? _fallbackEnv;
 const isLocal = firebaseEnv === "local";
 
 const getConfig = () => {
