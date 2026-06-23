@@ -8,9 +8,17 @@ on:
 
 jobs:
   e2e-tests:
-    name: Playwright E2E Tests
-    runs-on: ubuntu-latest
+    name: Playwright E2E Tests (${{ matrix.snapshot-target }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            snapshot-target: linux
+          - os: macos-latest
+            snapshot-target: macos
 
     steps:
       - name: Checkout repository
@@ -25,14 +33,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers with Linux dependencies
+        if: runner.os == 'Linux'
         run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright browsers
+        if: runner.os != 'Linux'
+        run: npx playwright install chromium
 
       - name: Run Playwright tests
         run: npm run test:e2e
         env:
           CI: true
-          E2E_SNAPSHOT_TARGET: linux
+          E2E_SNAPSHOT_TARGET: ${{ matrix.snapshot-target }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

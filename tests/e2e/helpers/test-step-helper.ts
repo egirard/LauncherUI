@@ -49,7 +49,6 @@ export class TestStepHelper {
     const slug = id.replace(/_/g, "-");
     const filenameBase = `${paddedIndex}-${slug}`;
 
-    await this.page.waitForTimeout(500); // Allow WebGL frames and DOM overlays to settle
     await expect(this.page).toHaveScreenshot(filenameBase, {
       animations: "disabled",
     });

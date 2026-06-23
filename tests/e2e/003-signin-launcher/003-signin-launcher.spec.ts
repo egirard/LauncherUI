@@ -1,5 +1,34 @@
-import { expect, test } from "@playwright/test";
+import { type Page, expect, test } from "@playwright/test";
 import { TestStepHelper } from "../helpers/test-step-helper";
+
+const readGameCardPositions = async (page: Page) =>
+  page.locator(".game-card").evaluateAll((cards) =>
+    cards.map((card) => {
+      const box = card.getBoundingClientRect();
+      return {
+        x: Math.round(box.x),
+        y: Math.round(box.y),
+      };
+    }),
+  );
+
+const waitForAnimationFrames = async (page: Page, frameCount = 2) =>
+  page.evaluate(
+    (frames) =>
+      new Promise<void>((resolve) => {
+        let remaining = frames;
+        const tick = () => {
+          remaining -= 1;
+          if (remaining <= 0) {
+            resolve();
+            return;
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }),
+    frameCount,
+  );
 
 test("E2E sign-in leads to launcher", async ({ page }, testInfo) => {
   const tester = new TestStepHelper(page, testInfo);
@@ -54,28 +83,13 @@ test("E2E sign-in leads to launcher", async ({ page }, testInfo) => {
             );
           }
 
-          // Log and verify exact deterministic 3D positions mapped to 2D
-          const initialBoxes: { x: number; y: number }[] = [];
-          for (let i = 0; i < 3; i++) {
-            const box = await page.locator(".game-card").nth(i).boundingBox();
-            expect(box).not.toBeNull();
-            if (!box) throw new Error("Box was null");
-            initialBoxes.push(box);
-          }
+          const initialPositions = await readGameCardPositions(page);
+          await waitForAnimationFrames(page);
+          const nextPositions = await readGameCardPositions(page);
 
-          // Wait to ensure UI state is actually frozen
-          await page.waitForTimeout(500);
-
-          for (let i = 0; i < 3; i++) {
-            const box = await page.locator(".game-card").nth(i).boundingBox();
-            expect(box).not.toBeNull();
-
-            // Programmatically assert none of the games are moving/orbiting.
-            // If these fail, Svelte/ThreeJS is leaking animations into the E2E state.
-            if (!box || !initialBoxes[i]) throw new Error("Box was null");
-            expect(Math.round(box.x)).toBe(Math.round(initialBoxes[i].x));
-            expect(Math.round(box.y)).toBe(Math.round(initialBoxes[i].y));
-          }
+          // Programmatically assert none of the games are moving/orbiting.
+          // If this fails, Svelte/ThreeJS is leaking animations into the E2E state.
+          expect(nextPositions).toEqual(initialPositions);
         },
       },
     ],

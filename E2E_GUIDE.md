@@ -77,7 +77,7 @@ E2E runs against Firebase emulators for Auth and Firestore.
 We store platform-specific baselines to keep zero-pixel tolerance across Mac, Windows, and Linux.
 
 - **Local runs** default to your platform (`macos`, `windows`, `linux`).
-- **CI runs** always target `linux`.
+- **CI runs** target both `linux` and `macos`.
 - Override the target with `E2E_SNAPSHOT_TARGET=linux` (or `macos`, `windows`).
 
 ### Update Linux snapshots from CI
