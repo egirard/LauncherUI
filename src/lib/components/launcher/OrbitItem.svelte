@@ -19,6 +19,20 @@ try {
   isE2e = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 } catch (e) {}
 
+const attachBoxMaterial =
+  (materialIndex: number) => (parent: THREE.Mesh, material: THREE.Material) => {
+    const previousMaterials = Array.isArray(parent.material)
+      ? parent.material
+      : [];
+    const nextMaterials = [...previousMaterials];
+    nextMaterials[materialIndex] = material;
+    parent.material = nextMaterials;
+
+    return () => {
+      parent.material = previousMaterials;
+    };
+  };
+
 $: x = Math.cos(angle) * radius;
 $: z = Math.sin(angle) * radius;
 
@@ -92,20 +106,20 @@ $: orbitColor = isHovered ? "#ffffff" : "#00e5ff";
     <!-- By default, BoxGeometry materials map as: [right, left, top, bottom, front, back] -->
     <T.BoxGeometry args={[boxWidth, boxHeight, boxDepth]} />
     
-    <T.MeshStandardMaterial color="#222222" attach="material-0" roughness={0.7} />
-    <T.MeshStandardMaterial color="#222222" attach="material-1" roughness={0.7} />
+    <T.MeshStandardMaterial color="#222222" attach={attachBoxMaterial(0)} roughness={0.7} />
+    <T.MeshStandardMaterial color="#222222" attach={attachBoxMaterial(1)} roughness={0.7} />
     
     <!-- Top Face (Cover Art) is material 2 -->
     {#if tex}
       <!-- Rotate the texture map so it aligns with the camera nicely if needed -->
-      <T.MeshStandardMaterial map={tex} attach="material-2" roughness={0.4} metalness={0.1} />
+      <T.MeshStandardMaterial map={tex} attach={attachBoxMaterial(2)} roughness={0.4} metalness={0.1} />
     {:else}
-      <T.MeshStandardMaterial color="#edc92d" attach="material-2" />
+      <T.MeshStandardMaterial color="#edc92d" attach={attachBoxMaterial(2)} />
     {/if}
     
-    <T.MeshStandardMaterial color="#222222" attach="material-3" roughness={0.7} />
-    <T.MeshStandardMaterial color="#222222" attach="material-4" roughness={0.7} />
-    <T.MeshStandardMaterial color="#111111" attach="material-5" roughness={0.8} />
+    <T.MeshStandardMaterial color="#222222" attach={attachBoxMaterial(3)} roughness={0.7} />
+    <T.MeshStandardMaterial color="#222222" attach={attachBoxMaterial(4)} roughness={0.7} />
+    <T.MeshStandardMaterial color="#111111" attach={attachBoxMaterial(5)} roughness={0.8} />
   </T.Mesh>
 
   <!-- Label and Image (E2E requirement) Overlay -->

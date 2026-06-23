@@ -8,6 +8,7 @@
 - Repaired the npm lockfile so `npm ci` succeeds under the npm version used by GitHub Actions.
 - Removed arbitrary E2E sleeps in favor of frame-based stability checks for the orbit UI.
 - Expanded E2E CI to run against both committed Linux and macOS snapshot baselines.
+- Fixed Threlte material attachment so game box covers use the committed generated art instead of default white materials.
 
 # Testing
 - `npm run ci`
@@ -28,3 +29,4 @@
 > unstable should be fine, just find the right node package
 > No there are no exceptions for zero pixel tolerance. I've looked at the screenshot difference and the two animations are displaying entirely different frames with the orbiting objects in different positions. Add programmatic asserts for the expected positions of the games in orbit so that you can detect that it is not a screenshot variance but a actual bug in the UI state that is tripping you up. NO EXCEPTIONS. NO BYPASSES. DETECT AND FIX THE ACTUAL PROBLEM.
 > OK let's fix things up and get e2e passing locally and in CI on both platforms.
+> Ok the boxes are just plain white boxes that aren't using the graphics that are in the PR. Let's fix that.
