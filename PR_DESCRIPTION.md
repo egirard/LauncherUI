@@ -18,6 +18,7 @@
 - `npm run test:e2e`
 - `nix develop -c npm run test:e2e`
 - GitHub Actions: Update Linux E2E Snapshots
+- GitHub Actions: Update Linux E2E Snapshots for cover-art baseline
 
 # Questions / Open Issues
 - None.
