@@ -5,10 +5,18 @@
 - Enforced zero-tolerance visual diff determinism by disabling WebGL antialiasing, pausing CSS transitions, and freezing Threlte frameloops (via `prefers-reduced-motion`) exclusively during E2E testing runs.
 - Added programmatic TypeScript E2E assertions to strictly calculate and lock down the 3D position logic and alphabetical ordering of games.
 - Updated Playwright hook scripts to avoid duplicate test runs per user feedback.
+- Repaired the npm lockfile so `npm ci` succeeds under the npm version used by GitHub Actions.
+- Removed arbitrary E2E sleeps in favor of frame-based stability checks for the orbit UI.
+- Expanded E2E CI to run against both committed Linux and macOS snapshot baselines.
 
 # Testing
 - `npm run ci`
+- `npm run check`
+- `npm test`
+- `npx -y npm@10 ci --dry-run`
 - `npm run test:e2e`
+- `nix develop -c npm run test:e2e`
+- GitHub Actions: Update Linux E2E Snapshots
 
 # Questions / Open Issues
 - None.
@@ -19,3 +27,4 @@
 > no you must use nix and not brew to install things. FIx the nix configuration
 > unstable should be fine, just find the right node package
 > No there are no exceptions for zero pixel tolerance. I've looked at the screenshot difference and the two animations are displaying entirely different frames with the orbiting objects in different positions. Add programmatic asserts for the expected positions of the games in orbit so that you can detect that it is not a screenshot variance but a actual bug in the UI state that is tripping you up. NO EXCEPTIONS. NO BYPASSES. DETECT AND FIX THE ACTUAL PROBLEM.
+> OK let's fix things up and get e2e passing locally and in CI on both platforms.
