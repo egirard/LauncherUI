@@ -21,8 +21,10 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            nodejs
+            nodejs_22
             bun
+            actionlint
+            gh
             openjdk
           ];
         };
