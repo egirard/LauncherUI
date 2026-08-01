@@ -1,0 +1,79 @@
+name: Deploy PR preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to deploy
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - run: nix develop --command npm ci
+      - run: nix develop --command npm run check
+      - run: nix develop --command npm run build
+
+  deploy:
+    needs: verify
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - run: nix develop --command npm ci
+      - name: Determine deployment path
+        id: deployment
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          echo "base=/$REPOSITORY_NAME/pr$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "destination=pr$PR_NUMBER" >> "$GITHUB_OUTPUT"
+      - name: Build static client against production Firebase
+        run: nix develop --command npm run build
+        env:
+          PUBLIC_BASE_PATH: ${{ steps.deployment.outputs.base }}
+          VITE_FIREBASE_ENV: production
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
+      - uses: peaceiris/actions-gh-pages@v4.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build
+          destination_dir: ${{ steps.deployment.outputs.destination }}
+          keep_files: true
+      - name: Link preview in pull request
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr${{ github.event.pull_request.number }}/
+        run: >-
+          nix develop --command gh pr comment "$PR_NUMBER"
+          --repo "$GITHUB_REPOSITORY"
+          --edit-last
+          --create-if-none
+          --body "Preview: [$PREVIEW_URL]($PREVIEW_URL)"
